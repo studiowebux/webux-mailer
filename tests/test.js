@@ -1,5 +1,5 @@
 const webuxMailer = require("../index");
-const { CreateApp } = require("webux-app");
+const { CreateApp, Webux } = require("webux-app");
 
 CreateApp();
 
@@ -13,7 +13,7 @@ const options = {
   password: ""
 };
 
-webuxMailer.init(options);
+webuxMailer.init(Webux, options);
 
 webuxMailer
   .mail(
@@ -33,7 +33,7 @@ webuxMailer
 // Email enabled
 options.isEnabled = true;
 
-webuxMailer.init(options);
+webuxMailer.init(Webux, options);
 
 webuxMailer
   .mail(

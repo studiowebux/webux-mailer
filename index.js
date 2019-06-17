@@ -15,14 +15,17 @@
 "use strict";
 
 const nodemailer = require("nodemailer");
-const { Webux } = require("webux-app");
 
 let Transporter;
+let _Webux; // local Webux variable for future logging (when mail is called)
 
-const init = options => {
-  if (!options.isEnabled) {
+const init = (Webux, options) => {
+  _Webux = Webux;
+  if (options && !options.isEnabled) {
     Webux.log.warn("MAIL_FEATURE_DISABLED");
-  } else {
+  }
+
+  if (options && options.isEnabled) {
     Transporter = nodemailer.createTransport({
       host: options.host,
       port: options.port,
@@ -38,7 +41,7 @@ const init = options => {
 const mail = (sender, recipient, subject, text, body) => {
   return new Promise((reject, resolve) => {
     if (!Transporter) {
-      Webux.log.warn("TRIED_TO_SEND_EMAIL_BUT_MAIL_FEATURE_DISABLED");
+      _Webux.log.warn("TRIED_TO_SEND_EMAIL_BUT_MAIL_FEATURE_DISABLED");
       return reject(new Error("MAIL_FEATURE_DISABLED_NOT_SENT"));
     } else {
       const email = {
@@ -50,11 +53,11 @@ const mail = (sender, recipient, subject, text, body) => {
       };
       Transporter.sendMail(email, (err, sent) => {
         if (err) {
-          Webux.log.error(err);
+          _Webux.log.error(err);
           return reject(err);
         }
 
-        Webux.log.info(sent);
+        _Webux.log.info(sent);
         return resolve(sent);
       });
     }
