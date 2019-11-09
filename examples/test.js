@@ -4,16 +4,17 @@ const { CreateApp, Webux } = require("@studiowebux/app");
 CreateApp();
 
 // email disabled
+console.log("Enter the information of your mail server.")
 const options = {
   isEnabled: false,
-  host: "",
+  host: process.env.HOST || "",
   port: 465,
   useSSL: true,
-  user: "",
-  password: ""
+  user: process.env.USER || "",
+  password: process.env.PASSWORD || ""
 };
 
-webuxMailer.init(Webux, options);
+webuxMailer.init(options, app);
 
 webuxMailer
   .mail(
@@ -33,7 +34,7 @@ webuxMailer
 // Email enabled
 options.isEnabled = true;
 
-webuxMailer.init(Webux, options);
+webuxMailer.init(options, app);
 
 webuxMailer
   .mail(
