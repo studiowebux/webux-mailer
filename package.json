@@ -1,5 +1,5 @@
 {
-  "name": "webux-mailer",
+  "name": "@studiowebux/mailer",
   "version": "1.0.1",
   "description": "Module for mailing",
   "main": "index.js",

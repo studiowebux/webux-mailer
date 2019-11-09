@@ -1,5 +1,5 @@
 const webuxMailer = require("../index");
-const { CreateApp, Webux } = require("webux-app");
+const { CreateApp, Webux } = require("@studiowebux/app");
 
 CreateApp();
 
