@@ -7,7 +7,7 @@ This module is a wrapper to send mails, it uses nodemailer.
 ## Installation
 
 ```bash
-npm install --save webux-mailer
+npm install --save @studiowebux/mailer
 ```
 
 ## Usage
@@ -111,7 +111,7 @@ cd ../../examples/
 node index.js
 ```
 
-Launch the example scripts:
+To launch the example scripts:
 
 ```bash
 node bad.js
