@@ -1,42 +1,101 @@
 # Webux Mailer
+
 This module is a wrapper to send mails, it uses nodemailer.
 
-## Installation 
+## Installation
+
 ```bash
-npm i --save webux-mailer
+npm install --save webux-mailer
 ```
 
 ## Usage
+
+### Configuration
+
+Transport configuration
+
+```javascript
+const opts = {
+  isEnabled: true,
+  host: "127.0.0.1",
+  port: 2525,
+  secure: false,
+  auth: {
+    user: "",
+    pass: ""
+  }
+};
 ```
-const webuxMailer = require("webux-mailer");
-const express = require("express");
-const app = express();
+
+Email data object
+
+```javascript
+// Data structure : https://nodemailer.com/message/
+// bcc field is not detected by the mailparser and/or the smtp-server
+const data = {
+  from: "test@from.local",
+  to: ["test1@to.local", "test2@to.local"],
+  cc: ["test3@cc.local", "test5@cc.local", "test6@cc.local"],
+  bcc: ["test4@bcc.local"],
+  subject: "Testing the webux mailer",
+  html: "<p>Hello World !</p>",
+  text: "Hello World !"
+};
+```
+
+### Quick start
+
+example.js
+
+```javascript
+const WebuxMailer = require("@studiowebux/mailer");
+
+const webuxMailer = new WebuxMailer();
 
 const options = {
   isEnabled: true,
-  host: process.env.HOST || "",
-  port: 465,
-  useSSL: true,
-  user: process.env.USER || "",
-  password: process.env.PASSWORD || ""
+  host: process.env.HOST || "127.0.0.1",
+  port: 2525,
+  secure: false,
+  auth: {
+    user: process.env.USER || "",
+    pass: process.env.PASSWORD || ""
+  }
 };
 
-webuxMailer.init(options, app);
+webuxMailer.Initialize(opts).then(info => {
+  const data = {
+    from: "test@from.local",
+    to: ["test1@to.local", "test2@to.local"],
+    subject: "Testing the webux mailer",
+    html: "<p>Hello World !</p>",
+    text: "Hello World !"
+  };
 
-webuxMailer
-  .mail(
-    "sender@mail.com",
-    "recipient@mail.com",
-    "Hello world",
-    "Hello World",
-    "<b>Hello World ! </b>"
-  )
-  .then(sent => {
-    console.log(sent);
-  })
-  .catch(err => {
-    console.error(err);
+  webuxMailer.SendMail(data).then(info => {
+    console.log(info);
   });
+});
+```
+
+#### Fake SMTP Server with Web UI
+
+It will start the server, then the frontend and send an email.
+
+```bash
+# Start the smtp-server and socket.IO
+cd fake-smtp-server/
+npm install
+npm start &
+
+# Start the frontend
+cd ./frontend
+npm install
+npm run serve &
+
+# Send an email
+cd ../../examples/
+node index.js
 ```
 
 ## Contributing
@@ -44,4 +103,5 @@ webuxMailer
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
+
 SEE LICENSE IN license.txt
