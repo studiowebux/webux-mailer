@@ -12,28 +12,34 @@
               <div class="card-title">
                 <div class="d-flex justify-content-between">
                   <h3>{{ mail.subject }}</h3>
+                  <p>{{ mail.date }}</p>
                 </div>
               </div>
               <div class="card-text">
-                <p>
-                  From:
-                  <span class="small" v-html="mail.sender"></span>
-                </p>
-                <p>
-                  To:
-                  <span class="small" v-html="mail.recipient"></span>
-                </p>
-                <p>
-                  CC:
-                  <span class="small" v-html="mail.cc"></span>
-                </p>
-                <p>
-                  BCC:
-                  <span class="small" v-html="mail.bcc"></span>
-                </p>
-                <p v-if="!mail.html">{{ mail.text }}</p>
-                <hr />
-                <div v-html="mail.html"></div>
+                <div class="d-flex justify-content-between">
+                  <p>
+                    From:
+                    <span class="small" v-html="mail.sender"></span>
+                  </p>
+                  <p>
+                    To:
+                    <span class="small" v-html="mail.recipient"></span>
+                  </p>
+                  <p v-if="mail.cc">
+                    CC:
+                    <span class="small" v-html="mail.cc"></span>
+                  </p>
+                  <p v-if="mail.bcc">
+                    BCC:
+                    <span class="small" v-html="mail.bcc"></span>
+                  </p>
+                </div>
+                <div class="section">
+                  <h2>Content</h2>
+                  <p v-if="!mail.html">{{ mail.text }}</p>
+                  <hr />
+                  <div v-html="mail.html"></div>
+                </div>
               </div>
             </div>
           </div>

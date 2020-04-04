@@ -2,6 +2,8 @@
 
 This module is a wrapper to send mails, it uses nodemailer.
 
+> Within this module, there is also a Fake SMTP Server with a simple Web UI to test the features.
+
 ## Installation
 
 ```bash
@@ -12,7 +14,9 @@ npm install --save webux-mailer
 
 ### Configuration
 
-Transport configuration
+#### Transport configuration
+
+Official documentation : https://nodemailer.com/smtp/
 
 ```javascript
 const opts = {
@@ -23,15 +27,21 @@ const opts = {
   auth: {
     user: "",
     pass: ""
+  },
+  pool: false,
+  tls: {
+    // do not fail on invalid certs
+    rejectUnauthorized: false
   }
 };
 ```
 
-Email data object
+#### Email data object
+
+Official documentation : https://nodemailer.com/message/
 
 ```javascript
-// Data structure : https://nodemailer.com/message/
-// bcc field is not detected by the mailparser and/or the smtp-server
+// NOTE : bcc field is not detected by the mailparser and/or the smtp-server
 const data = {
   from: "test@from.local",
   to: ["test1@to.local", "test2@to.local"],
@@ -45,6 +55,8 @@ const data = {
 
 ### Quick start
 
+> For testing only, Check the examples/ directory for complete code.
+
 example.js
 
 ```javascript
@@ -52,7 +64,7 @@ const WebuxMailer = require("@studiowebux/mailer");
 
 const webuxMailer = new WebuxMailer();
 
-const options = {
+const opts = {
   isEnabled: true,
   host: process.env.HOST || "127.0.0.1",
   port: 2525,
@@ -93,9 +105,25 @@ cd ./frontend
 npm install
 npm run serve &
 
-# Send an email
+# Before executing these 2 lines, Access the frontend
+# Send an email (It can be executed multiple times)
 cd ../../examples/
 node index.js
+```
+
+Launch the example scripts:
+
+```bash
+node bad.js
+echo "---"
+node disabled.js
+echo "---"
+node failure.js
+echo "---"
+node simple.js
+echo "---"
+node index.js
+echo "+++"
 ```
 
 ## Contributing

@@ -3,8 +3,8 @@ const WebuxMailer = require("../src/index");
 const opts = {
   isEnabled: true,
   host: process.env.HOST || "127.0.0.1",
-  port: 2525,
-  secure: false,
+  port: 1111, // This is incorrect
+  secure: true, // This is not configured/enabled
   auth: {
     user: process.env.USER || "",
     pass: process.env.PASSWORD || ""

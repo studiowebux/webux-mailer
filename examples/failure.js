@@ -17,8 +17,8 @@ webuxMailer
   .Initialize(opts)
   .then(() => {
     const data = {
-      from: "test@from.local",
-      to: ["test1@to.local", "test2@to.local"],
+      from: "",
+      to: [],
       subject: "Testing the webux mailer",
       html:
         "<h1>Welcome !</h1><p>Hello World !</p><div class='footer'>Studio Webux</div>",

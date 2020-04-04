@@ -12,9 +12,7 @@ try {
 
   webuxMailer
     .Initialize(opts)
-    .then(info => {
-      console.log(info);
-
+    .then(() => {
       // Data structure : https://nodemailer.com/message/
       // bcc field is not detected by the mailparser and/or the smtp-server
       const data = {
