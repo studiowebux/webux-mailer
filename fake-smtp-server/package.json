@@ -15,6 +15,7 @@
     "http": "0.0.1-security",
     "mailparser": "^2.7.7",
     "nodemailer": "^6.4.6",
+    "quiet": "0.0.3",
     "smtp-server": "^3.6.0"
   }
 }

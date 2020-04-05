@@ -10,30 +10,35 @@
 const nodemailer = require("nodemailer");
 
 /**
- * To configure the mail transporter
- * @param {Object} opts The options to configure the mail instance (https://nodemailer.com/smtp/)
- * @param {Object} log The custom logger function, Default : console
- * @returns {Promise}
+ * @class Mailer Class
  */
-function Initialize(opts, log = console) {
-  return new Promise(async (resolve, reject) => {
-    if (!opts) {
-      return reject("webux-mailer - No options defined");
-    }
-    if (!opts.isEnabled) {
-      return reject("webux-mailer - Mail feature is disabled");
-    }
-
-    this.log.debug("webux-mailer - Configuring the logger function");
+class Mailer {
+  /**
+   *
+   * @param {object} opts Options to enable the mailer and configure the transport
+   * @param {object} log Custom logger function (Default: console)
+   * @constructor
+   */
+  constructor(opts, log = console) {
+    this.isEnabled = opts && opts.isEnabled ? opts.isEnabled : false;
     this.log = log;
+
     this.log.debug("webux-mailer - Logger function configured");
 
-    if (opts.isEnabled) {
+    if (this.isEnabled) {
       this.log.debug("webux-mailer - Configuring the transporter");
       this.transporter = nodemailer.createTransport(opts);
 
       this.log.debug("webux-mailer - Transporter configured");
+    }
+  }
 
+  /**
+   * Verify the transporter configuration and authentication
+   * @return {Promise<string>} Returns a message
+   */
+  Verify() {
+    return new Promise(async (resolve, reject) => {
       this.log.debug(
         "webux-mailer - Verifying the transporter connection and authentication information"
       );
@@ -54,48 +59,38 @@ function Initialize(opts, log = console) {
       return resolve(
         "webux-mailer - Transporter connection and authentication verified"
       );
-    }
-  });
-}
-
-/**
- * To send an email
- * @param {Object} data The mail data (https://nodemailer.com/message/)
- * @returns {Promise}
- */
-function SendMail(data) {
-  return new Promise(async (resolve, reject) => {
-    if (!data) {
-      return reject(
-        "webux-mailer - Unable to send the email, no data provided"
-      );
-    }
-
-    this.log.debug("webux-mailer - Sending the email");
-    const sent = await this.transporter.sendMail(data).catch(e => {
-      return reject(`webux-mailer - ${e.message}`);
     });
+  }
 
-    if (!sent) {
-      this.log.debug(`webux-mailer - email not sent`);
-      return reject("webux-mailer - Message not Sent");
-    }
-    this.log.debug(`webux-mailer - email sent (id: ${sent.messageId})`);
-    return resolve(sent);
-  });
-}
+  /**
+   * To send an email if the mailer is enabled
+   * @param {object} data The data to define the email
+   * @return {Promise<object>}  the message object
+   */
+  Sendmail(data) {
+    return new Promise(async (resolve, reject) => {
+      if (!this.isEnabled) {
+        return reject("webux-mailer - Mail feature is disabled");
+      }
+      if (!data) {
+        return reject(
+          "webux-mailer - Unable to send the email, no data provided"
+        );
+      }
 
-/**
- * The Mailer Function
- * By default, the transporter is set to `undefined`
- * By default, the log is set to `console`
- */
-function Mailer() {
-  this.transporter;
-  this.log = console;
+      this.log.debug("webux-mailer - Sending the email");
+      const sent = await this.transporter.sendMail(data).catch(e => {
+        return reject(`webux-mailer - ${e.message}`);
+      });
 
-  this.Initialize = Initialize;
-  this.SendMail = SendMail;
+      if (!sent) {
+        this.log.debug(`webux-mailer - email not sent`);
+        return reject("webux-mailer - Message not Sent");
+      }
+      this.log.debug(`webux-mailer - email sent (id: ${sent.messageId})`);
+      return resolve(sent);
+    });
+  }
 }
 
 module.exports = Mailer;

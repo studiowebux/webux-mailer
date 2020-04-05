@@ -62,8 +62,6 @@ example.js
 ```javascript
 const WebuxMailer = require("@studiowebux/mailer");
 
-const webuxMailer = new WebuxMailer();
-
 const opts = {
   isEnabled: true,
   host: process.env.HOST || "127.0.0.1",
@@ -75,18 +73,18 @@ const opts = {
   }
 };
 
-webuxMailer.Initialize(opts).then(info => {
-  const data = {
-    from: "test@from.local",
-    to: ["test1@to.local", "test2@to.local"],
-    subject: "Testing the webux mailer",
-    html: "<p>Hello World !</p>",
-    text: "Hello World !"
-  };
+const webuxMailer = new WebuxMailer(opts, console);
 
-  webuxMailer.SendMail(data).then(info => {
-    console.log(info);
-  });
+const data = {
+  from: "test@from.local",
+  to: ["test1@to.local", "test2@to.local"],
+  subject: "Testing the webux mailer",
+  html: "<p>Hello World !</p>",
+  text: "Hello World !"
+};
+
+webuxMailer.Sendmail(data).then(info => {
+  console.log(info);
 });
 ```
 
@@ -120,10 +118,58 @@ node disabled.js
 echo "---"
 node failure.js
 echo "---"
+node incomplete.js
+echo "---"
+node noOpts.js
+echo "---"
 node simple.js
 echo "---"
 node index.js
 echo "+++"
+```
+
+### Functions
+
+#### constructor(opts, log = console)
+
+Initialize the transporter and the logger function
+
+#### Verify(): Promise<String>
+
+Verify the transporter configuration and authentication
+
+```javascript
+webuxMailer
+  .Verify()
+  .then(info => {
+    console.log(info);
+  })
+  .catch(e => {
+    console.error(e);
+  });
+```
+
+#### Sendmail(data): Promise<Object>
+
+Send an email if the mailer is enabled
+
+```javascript
+const data = {
+  from: "test@from.local",
+  to: ["test1@to.local", "test2@to.local"],
+  subject: "Testing the webux mailer",
+  html: "<p>Hello World !</p>",
+  text: "Hello World !"
+};
+
+webuxMailer
+  .Sendmail(data)
+  .then(info => {
+    console.log(info);
+  })
+  .catch(e => {
+    console.error(e);
+  });
 ```
 
 ## Contributing
