@@ -134,7 +134,7 @@ echo "+++"
 
 Initialize the transporter and the logger function
 
-#### Verify(): Promise<String>
+#### Verify(): Promise\<String\>
 
 Verify the transporter configuration and authentication
 
@@ -149,7 +149,7 @@ webuxMailer
   });
 ```
 
-#### Sendmail(data): Promise<Object>
+#### Sendmail(data): Promise\<Object\>
 
 Send an email if the mailer is enabled
 
