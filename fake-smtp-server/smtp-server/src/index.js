@@ -4,13 +4,15 @@ const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 
+const PORT = process.env.PORT || 3030;
+
 async function LoadApp() {
   // loading the webux socket module
   const io = await webuxSocket(null, server, console);
   fakeMailServer.startServer(io);
 
-  server.listen(1340, () => {
-    console.log("Server is listening on port 1340");
+  server.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
   });
 }
 

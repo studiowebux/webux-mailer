@@ -1,0 +1,94 @@
+# ────────────────────────────────────────────────────────────────────────────────
+# Backend
+# ────────────────────────────────────────────────────────────────────────────────
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: backend
+  name: backend
+spec:
+  serviceName: "backend"
+  selector:
+    matchLabels:
+      app: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          envFrom:
+            - configMapRef:
+                name: backend
+          image: docker-registry.docker-registry.192.168.2.252.xip.io/jabod-backend:v0.2.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3030
+          readinessProbe:
+            httpGet:
+              path: /api/v1/healthcheck
+              port: 3030
+              httpHeaders:
+                - name: Origin
+                  value: http://mailer.webux.lab
+            initialDelaySeconds: 30
+            periodSeconds: 5
+
+# ────────────────────────────────────────────────────────────────────────────────
+# Frontend
+# ────────────────────────────────────────────────────────────────────────────────
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  serviceName: "frontend"
+  selector:
+    matchLabels:
+      app: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - image: docker-registry.docker-registry.192.168.2.252.xip.io/jabod-frontend:v0.2.1
+          imagePullPolicy: Always
+          name: frontend
+          env:
+            - name: SERVER_NAME
+              value: mailer.webux.lab
+            - name: VUE_APP_IO_URL
+              value: https://mailer.webux.lab:3030
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /var/log/nginx/
+              name: jabod-0-2-1-frontend-logs
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 5
+  volumeClaimTemplates:
+    - metadata:
+        name: jabod-0-2-1-frontend-logs
+      spec:
+        accessModes: ["ReadWriteMany"]
+        resources:
+          requests:
+            storage: 5Gi
+        selector:
+          matchLabels:
+            name: jabod-0-2-1-frontend-log

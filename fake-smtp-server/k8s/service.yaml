@@ -1,0 +1,33 @@
+# ────────────────────────────────────────────────────────────────────────────────
+# Backend
+# ────────────────────────────────────────────────────────────────────────────────
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  clusterIP: None
+  ports:
+    - port: 3030
+      name: server
+  selector:
+    app: backend
+
+# ────────────────────────────────────────────────────────────────────────────────
+# Frontend
+# ────────────────────────────────────────────────────────────────────────────────
+
+---
+## Frontend Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  clusterIP: None
+  ports:
+    - port: 80
+      name: http
+  selector:
+    app: frontend

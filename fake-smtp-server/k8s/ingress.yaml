@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontend
+spec:
+  rules:
+    - host: mailer.webuxlab.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: frontend
+              servicePort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: api
+spec:
+  rules:
+    - host: mailer.webuxlab.com
+      http:
+        paths:
+          - path: /api
+            backend:
+              serviceName: backend
+              servicePort: 3030

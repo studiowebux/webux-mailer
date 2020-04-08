@@ -25,10 +25,8 @@ try {
   transporter.sendMail(email, (err, sent) => {
     if (err) {
       console.error(err);
-      return reject(err);
     }
     console.info(sent);
-    return resolve(sent);
   });
 } catch (e) {
   console.error(e);

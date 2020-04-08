@@ -1,6 +1,8 @@
 const { SMTPServer } = require("smtp-server");
 const simpleParser = require("mailparser").simpleParser;
 
+const SMTP_PORT = process.env.SMTP_PORT || 2525;
+
 function startServer(socketIO) {
   const server = new SMTPServer({
     // disable STARTTLS to allow authentication in clear text mode
@@ -57,7 +59,7 @@ function startServer(socketIO) {
     }
   });
 
-  server.listen(2525);
+  server.listen(SMTP_PORT);
 }
 
 module.exports = {
