@@ -1,6 +1,6 @@
 const state = {
   mails: [],
-  mailInit: false
+  mailInit: false,
 };
 
 const mutations = {
@@ -15,17 +15,21 @@ const actions = {
     commit("INIT_MAIL", data);
     dispatch("doneLoading");
   },
+  socket_emailSent({ dispatch }) {
+    dispatch("setSuccess", "Email will be retrieved soon");
+    dispatch("doneLoading");
+  },
 };
 
 const getters = {
-  mails: state => {
+  mails: (state) => {
     return state.mails;
-  }
+  },
 };
 
 export default {
   actions,
   mutations,
   state,
-  getters
+  getters,
 };

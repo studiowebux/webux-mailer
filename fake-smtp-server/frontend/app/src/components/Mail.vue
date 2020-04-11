@@ -2,6 +2,10 @@
   <div id="emails" class="container">
     <div class="text-center mx-auto mt-2">
       <h1 class="text-center">Emails</h1>
+      <div class="sendEmail">
+        <button @click="SendEmail">Send a Test Email</button>
+      </div>
+      <hr />
       <div class="isLoading" v-if="isLoading">
         <Loading />
       </div>
@@ -60,6 +64,18 @@ export default {
   },
   computed: {
     ...mapGetters(["isLoading", "successMessage", "errorMessage", "mails"])
+  },
+  methods: {
+    SendEmail() {
+      this.$store.dispatch("setLoading");
+      this.$socket.client.emit("SendEmail", callback => {
+        if (callback) {
+          console.log("Success !");
+        } else {
+          console.error("Error !");
+        }
+      });
+    }
   },
   mounted() {
     if (!this.$store.getters.mailInit) {

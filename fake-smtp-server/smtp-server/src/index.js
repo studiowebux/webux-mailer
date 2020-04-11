@@ -1,15 +1,28 @@
 const fakeMailServer = require("./smtp-server");
-const webuxSocket = require("@studiowebux/socket");
+const WebuxSocket = require("@studiowebux/socket");
 const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
+
+const Send = require("../actions/send");
 
 const PORT = process.env.PORT || 3030;
 
 async function LoadApp() {
   // loading the webux socket module
-  const io = await webuxSocket(null, server, console);
-  fakeMailServer.startServer(io);
+  const socketIO = new WebuxSocket({}, server);
+
+  socketIO.Standalone().on("connect", (socket) => {
+    console.log(`New User ${socket.id}`);
+
+    socket.on("SendEmail", (fn) => {
+      Send();
+      socket.emit("emailSent");
+      fn(true);
+    });
+  });
+
+  fakeMailServer.startServer(socketIO.Standalone());
 
   server.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
