@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3030;
 
 async function LoadApp() {
   // loading the webux socket module
-  const socketIO = new WebuxSocket({}, server);
+  const socketIO = new WebuxSocket(null, server);
 
   socketIO.Standalone().on("connect", (socket) => {
     console.log(`New User ${socket.id}`);
@@ -19,6 +19,10 @@ async function LoadApp() {
       Send();
       socket.emit("emailSent");
       fn(true);
+    });
+
+    socket.on("disconnect", () => {
+      console.log(`Bye Bye ${socket.id}`);
     });
   });
 
