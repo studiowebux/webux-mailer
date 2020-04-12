@@ -1,2 +1,0 @@
-## Fake SMTP Server
-
