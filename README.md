@@ -1,6 +1,6 @@
 ## Introduction
 
-This module is a wrapper to send mails, it uses nodemailer.
+This module is a wrapper to send emails, it uses nodemailer.
 
 ## Installation
 
@@ -36,6 +36,8 @@ const opts = {
 };
 ```
 
+> The `isEnabled` parameter allows to deactivate the mailer service, that way it doesn't send all emails while doing tests.
+
 #### Email data object
 
 Official documentation : https://nodemailer.com/message/
@@ -57,11 +59,11 @@ const data = {
 
 #### constructor(opts, log = console)
 
-Initialize the transporter and the logger function
+Initializes the transporter and the logger function
 
 #### Verify(): Promise\<String\>
 
-Verify the transporter configuration and authentication
+Verifies the transporter configuration and authentication
 
 ```javascript
 webuxMailer
@@ -76,7 +78,7 @@ webuxMailer
 
 #### Sendmail(data): Promise\<Object\>
 
-Send an email if the mailer is enabled
+Sends an email if the mailer is enabled
 
 ```javascript
 const data = {
