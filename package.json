@@ -3,9 +3,10 @@
   "version": "2.0.0",
   "description": "Module for mailing",
   "main": "src/index.js",
-  "scripts": {
-    "start-fake-smtp": "node fake-smtp-server/index.js"
+  "directories": {
+    "example": "examples"
   },
+  "scripts": {},
   "homepage": "https://github.com/studiowebux/webux-mailer",
   "repository": {
     "type": "git",

@@ -20,14 +20,15 @@ class Mailer {
    * @constructor
    */
   constructor(opts, log = console) {
-    this.isEnabled = opts && opts.isEnabled ? opts.isEnabled : false;
+    this.config = opts || {};
+    this.isEnabled = this.config.isEnabled ? this.config.isEnabled : false;
     this.log = log;
 
     this.log.debug("webux-mailer - Logger function configured");
 
     if (this.isEnabled) {
       this.log.debug("webux-mailer - Configuring the transporter");
-      this.transporter = nodemailer.createTransport(opts);
+      this.transporter = nodemailer.createTransport(this.config);
 
       this.log.debug("webux-mailer - Transporter configured");
     }
@@ -42,7 +43,7 @@ class Mailer {
       this.log.debug(
         "webux-mailer - Verifying the transporter connection and authentication information"
       );
-      const verified = await this.transporter.verify().catch(e => {
+      const verified = await this.transporter.verify().catch((e) => {
         return reject(`webux-mailer - ${e.message}`);
       });
 
@@ -79,7 +80,7 @@ class Mailer {
       }
 
       this.log.debug("webux-mailer - Sending the email");
-      const sent = await this.transporter.sendMail(data).catch(e => {
+      const sent = await this.transporter.sendMail(data).catch((e) => {
         return reject(`webux-mailer - ${e.message}`);
       });
 

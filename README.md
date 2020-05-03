@@ -1,14 +1,14 @@
-# Webux Mailer
+## Introduction
 
 This module is a wrapper to send mails, it uses nodemailer.
-
-> Within this module, there is also a Fake SMTP Server with a simple Web UI to test the features.
 
 ## Installation
 
 ```bash
 npm install --save @studiowebux/mailer
 ```
+
+[NPM](https://www.npmjs.com/package/@studiowebux/mailer)
 
 ## Usage
 
@@ -26,13 +26,13 @@ const opts = {
   secure: false,
   auth: {
     user: "",
-    pass: ""
+    pass: "",
   },
   pool: false,
   tls: {
     // do not fail on invalid certs
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 };
 ```
 
@@ -49,8 +49,52 @@ const data = {
   bcc: ["test4@bcc.local"],
   subject: "Testing the webux mailer",
   html: "<p>Hello World !</p>",
-  text: "Hello World !"
+  text: "Hello World !",
 };
+```
+
+### Functions
+
+#### constructor(opts, log = console)
+
+Initialize the transporter and the logger function
+
+#### Verify(): Promise\<String\>
+
+Verify the transporter configuration and authentication
+
+```javascript
+webuxMailer
+  .Verify()
+  .then((info) => {
+    console.log(info);
+  })
+  .catch((e) => {
+    console.error(e);
+  });
+```
+
+#### Sendmail(data): Promise\<Object\>
+
+Send an email if the mailer is enabled
+
+```javascript
+const data = {
+  from: "test@from.local",
+  to: ["test1@to.local", "test2@to.local"],
+  subject: "Testing the webux mailer",
+  html: "<p>Hello World !</p>",
+  text: "Hello World !",
+};
+
+webuxMailer
+  .Sendmail(data)
+  .then((info) => {
+    console.log(info);
+  })
+  .catch((e) => {
+    console.error(e);
+  });
 ```
 
 ### Quick start
@@ -69,8 +113,8 @@ const opts = {
   secure: false,
   auth: {
     user: process.env.USER || "",
-    pass: process.env.PASSWORD || ""
-  }
+    pass: process.env.PASSWORD || "",
+  },
 };
 
 const webuxMailer = new WebuxMailer(opts, console);
@@ -80,97 +124,17 @@ const data = {
   to: ["test1@to.local", "test2@to.local"],
   subject: "Testing the webux mailer",
   html: "<p>Hello World !</p>",
-  text: "Hello World !"
+  text: "Hello World !",
 };
 
-webuxMailer.Sendmail(data).then(info => {
+webuxMailer.Sendmail(data).then((info) => {
   console.log(info);
 });
 ```
 
-#### Fake SMTP Server with Web UI
+## Videos and other resources
 
-It will start the server, then the frontend and send an email.
-
-```bash
-# Start the smtp-server and socket.IO
-cd fake-smtp-server/
-npm install
-npm start &
-
-# Start the frontend
-cd ./frontend
-npm install
-npm run serve &
-
-# Before executing these 2 lines, Access the frontend
-# Send an email (It can be executed multiple times)
-cd ../../examples/
-node index.js
-```
-
-To launch the example scripts:
-
-```bash
-node bad.js
-echo "---"
-node disabled.js
-echo "---"
-node failure.js
-echo "---"
-node incomplete.js
-echo "---"
-node noOpts.js
-echo "---"
-node simple.js
-echo "---"
-node index.js
-echo "+++"
-```
-
-### Functions
-
-#### constructor(opts, log = console)
-
-Initialize the transporter and the logger function
-
-#### Verify(): Promise\<String\>
-
-Verify the transporter configuration and authentication
-
-```javascript
-webuxMailer
-  .Verify()
-  .then(info => {
-    console.log(info);
-  })
-  .catch(e => {
-    console.error(e);
-  });
-```
-
-#### Sendmail(data): Promise\<Object\>
-
-Send an email if the mailer is enabled
-
-```javascript
-const data = {
-  from: "test@from.local",
-  to: ["test1@to.local", "test2@to.local"],
-  subject: "Testing the webux mailer",
-  html: "<p>Hello World !</p>",
-  text: "Hello World !"
-};
-
-webuxMailer
-  .Sendmail(data)
-  .then(info => {
-    console.log(info);
-  })
-  .catch(e => {
-    console.error(e);
-  });
-```
+- [Live Demo](https://mailer.webuxlab.com)
 
 ## Contributing
 
